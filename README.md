@@ -6,7 +6,7 @@
 Configurar la infraestructura básica del proyecto en GitHub con colaboración establecida.
 
 🎯 Entregable Parte 1
-✅ Repositorio GitHub con 3 ramas: main, [Veronica], [Joel]
+✅ Repositorio GitHub con 3 ramas: main, [Veronica], [Johel]
 ✅ Ambos integrantes con acceso de escritura
 ✅ Proyecto Next.js base funcionando en local
 
@@ -27,42 +27,74 @@ Establecer el problema a resolver y las historias de usuario principales.
     + Dashboard de los datos ingresados de los usuarios(edad, procedencia) y la cantidad de postulaciones iniciadas, terminadas, postulaciones descartadas y postulacioness escogidas.
     + Interface de seguimiento de metricas de segumiento de los proyectos escogidos.
 
-## 📝 Crear historias de usuario
+# 📝 Historias de Usuario - Sistema UPC
 
-### SISTEMA UPC
+## 🎯 Problema
+La pérdida de datos de los usuarios que son registrados mediante un formulario y el análisis de datos de los usuarios registrados y el seguimiento de métricas de las postulaciones escogidas.
 
-### 🎯 Problema
+## 👥 Usuarios
+* **Admin**: El administrador tendrá la opción de todo el sistema.
+* **User**: Tendrá funcionalidades específicas.
 
-La perdida de datos de los usuarios que son registrados mediante un formulario y el analisis de datos de los usuarios registrados y el siguimineinto de metricas de las postulaciones escogidas.
+## 📱 Historias de Usuario
 
-### 👥 Usuarios
+### **Como Admin:**
 
-+ **Admin**: El administrador tendra la opcion de todo el sistema.
-+ **User**: Tendra funcionalidades especificas.
+#### 🔐 Gestión del Sistema
+* **Puedo acceder a un dashboard completo** para visualizar todas las métricas del sistema, incluyendo estadísticas de usuarios registrados, postulaciones por estado y análisis demográfico (edad, procedencia).
 
-### 📱 Historias de Usuario
+* **Puedo gestionar todos los usuarios del sistema** para crear, editar, eliminar cuentas y asignar roles específicos según las necesidades del programa.
 
-### Como [Tipo Usuario 1]:
+* **Puedo monitorear el seguimiento de proyectos escogidos** a través de una interfaz especializada que me permita ver el progreso, métricas de desempeño y indicadores clave de cada postulación seleccionada.
 
-+ [ ] Puedo [funcionalidad 1]
-+ [ ] Puedo [funcionalidad 2]
-+ [ ] Puedo [funcionalidad 3]
+#### 📊 Análisis de Datos
+* **Puedo generar reportes detallados** de las postulaciones iniciadas, terminadas, descartadas y escogidas para tomar decisiones basadas en datos.
 
-### Como [Tipo Usuario 2]:
+* **Puedo exportar datos del sistema** en diferentes formatos (Excel, PDF, CSV) para análisis externos o respaldos.
 
-+ [ ] Puedo [funcionalidad 1]
-+ [ ] Puedo [funcionalidad 2]
-+ [ ] Puedo [funcionalidad 3]
+#### ⚙️ Configuración
+* **Puedo configurar los parámetros del sistema** formularios de postulación y flujos de trabajo para adaptar el sistema a las necesidades del programa.
 
-### 🛠️ Stack
+### **Como User:**
 
-+ Next.js + TypeScript
-+ Tailwind CSS
+#### 🏠 Navegación y Acceso
+* **Puedo acceder a una interfaz de navegación intuitiva** que me muestre información relevante del programa, requisitos y fechas importantes de manera clara y organizada.
+
+* **Puedo registrarme e iniciar sesión** en el sistema de forma segura para acceder a mis funcionalidades específicas y mantener mis datos protegidos.
+
+#### 📝 Postulación
+* **Puedo completar un formulario de postulación** paso a paso, guardando mi progreso automáticamente para evitar la pérdida de datos y poder continuar en otro momento.
+
+* **Puedo ver el estado de mi postulación** en tiempo real (iniciada, en revisión, terminada, descartada, escogida) para estar informado sobre el progreso de mi aplicación.
+
+#### 📈 Seguimiento Personal
+* **Puedo acceder a un panel personal** donde puedo ver mi información registrada, el historial de mis postulaciones y actualizar mis datos cuando sea necesario.
+
+* **Puedo recibir notificaciones** sobre cambios en el estado de mi postulación o información importante del programa para mantenerme actualizado.
+
+## 🎯 Criterios de Aceptación Generales
+
+### Para el Admin:
+- El dashboard debe mostrar métricas en tiempo real
+- Los reportes deben generarse en menos de 30 segundos
+- Todas las acciones administrativas deben quedar registradas en logs
+
+### Para el User:
+- El formulario debe guardar automáticamente cada 2 minutos
+- La interfaz debe ser responsiva y accesible desde dispositivos móviles
+- Las notificaciones deben enviarse por email y mostrarse en el sistema
+
+## 🔄 Flujo de Trabajo Principal
+1. **Usuario se registra** → Sistema valida datos → Cuenta creada
+2. **Usuario completa postulación** → Sistema guarda automáticamente → Postulación enviada
+3. **Admin revisa postulaciones** → Actualiza estados → Sistema notifica usuarios
+4. **Admin genera reportes** → Sistema procesa datos → Reportes disponibles
+5. **Seguimiento de proyectos** → Métricas actualizadas → Dashboard actualizado
 
 ### 👨‍💻 Equipo
 
-- [Nombre 1] - [@github-username]
-- [Nombre 2] - [@github-username]
+- Verónica - [@VERONICAHR27]
+- Johel - [@johelcg7]
 
 🎯 Entregable Parte 2
 ✅ README.md completo con historias de usuario
