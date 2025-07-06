@@ -33,27 +33,18 @@ Establecer el problema a resolver y las historias de usuario principales.
 La pérdida de datos de los usuarios que son registrados mediante un formulario y el análisis de datos de los usuarios registrados y el seguimiento de métricas de las postulaciones escogidas.
 
 ## 👥 Usuarios
-* **Admin**: El administrador tendrá la opción de todo el sistema.
-* **User**: Tendrá funcionalidades específicas.
+*   **Coordinador del Programa StartUPC**: Gestiona el programa y los equipos de las startups.
+*   **Startup (Usuario)**: Postula al programa y realiza seguimiento de su avance.
 
 ## 📱 Historias de Usuario
 
-### **Como Admin:**
+### **Como Coordinador del Programa StartUPC:**
 
-#### 🔐 Gestión del Sistema
-* **Puedo acceder a un dashboard completo** para visualizar todas las métricas del sistema, incluyendo estadísticas de usuarios registrados, postulaciones por estado y análisis demográfico (edad, procedencia).
+*   **Dashboard Estratégico:** "Quiero acceder a un **dashboard estratégico** para monitorear la salud de cada convocatoria y el impacto del programa. Necesito visualizar métricas clave como: el total de postulaciones, el desglose por estado (recibidas, en revisión, aceptadas en el cohort), y un análisis demográfico de los fundadores que incluya su **vínculo con la UPC (estudiante, egresado, docente)**, su **procedencia regional** y el **sector de su startup (FinTech, EdTech, HealthTech, etc.)**."
 
-* **Puedo gestionar todos los usuarios del sistema** para crear, editar, eliminar cuentas y asignar roles específicos según las necesidades del programa.
+*   **Gestión del Ecosistema:** "Necesito una plataforma para **gestionar el ecosistema de StartUPC**, donde pueda administrar los perfiles de las startups participantes y otros coordinadores del programa. Debo poder asignar roles específicos como 'Coordinador' para el equipo administrativo y 'Startup' para los equipos emprendedores del cohort actual."
 
-* **Puedo monitorear el seguimiento de proyectos escogidos** a través de una interfaz especializada que me permita ver el progreso, métricas de desempeño y indicadores clave de cada postulación seleccionada.
-
-#### 📊 Análisis de Datos
-* **Puedo generar reportes detallados** de las postulaciones iniciadas, terminadas, descartadas y escogidas para tomar decisiones basadas en datos.
-
-* **Puedo exportar datos del sistema** en diferentes formatos (Excel, PDF, CSV) para análisis externos o respaldos.
-
-#### ⚙️ Configuración
-* **Puedo configurar los parámetros del sistema** formularios de postulación y flujos de trabajo para adaptar el sistema a las necesidades del programa.
+*   **Seguimiento y Acompañamiento:** "Quiero una interfaz de **seguimiento y acompañamiento** para monitorear de cerca a las startups de nuestro portafolio. Debo poder ver su progreso en los hitos definidos, sus **KPIs de crecimiento** (ej. usuarios activos, MRR) y, fundamentalmente, sus **métricas de impacto** (ej. número de beneficiarios, contribución a ODS), que reflejen su alineación con la misión de StartUPC."
 
 ### **Como User:**
 
