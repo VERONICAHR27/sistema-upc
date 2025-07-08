@@ -6,7 +6,7 @@ export default function Testimonios() {
       name: 'María González',
       role: 'CEO de TechStart',
       image: '👩‍💼',
-      quote: 'UPC fue fundamental para el desarrollo de mi startup. La mentoría y el apoyo recibido fueron invaluables.',
+      quote: 'StarUPC fue fundamental para el desarrollo de mi startup. La mentoría y el apoyo recibido fueron invaluables.',
       company: 'TechStart'
     },
     {
@@ -20,7 +20,7 @@ export default function Testimonios() {
       name: 'Ana Rojas',
       role: 'Co-fundadora de HealthTech',
       image: '👩‍⚕️',
-      quote: 'La red de contactos y la experiencia adquirida en UPC fueron clave para nuestro éxito.',
+      quote: 'La red de contactos y la experiencia adquirida en StarUPC fueron clave para nuestro éxito.',
       company: 'HealthTech'
     }
   ];
@@ -36,7 +36,7 @@ export default function Testimonios() {
             Testimonios
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Conoce las historias de éxito de emprendedores que transformaron sus ideas en realidades exitosas con el apoyo de UPC.
+            Conoce las historias de éxito de emprendedores que transformaron sus ideas en realidades exitosas con el apoyo de StarUPC.
           </p>
         </div>
 

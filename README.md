@@ -42,11 +42,11 @@ La perdida de datos de los usuarios que son registrados mediante un formulario y
 
 ### 📱 Historias de Usuario
 
-### Como [Tipo Usuario 1]:
+### Realizar una interface de navegacion con datos relevantes del programa
 
-+ [ ] Puedo [funcionalidad 1]
-+ [ ] Puedo [funcionalidad 2]
-+ [ ] Puedo [funcionalidad 3]
++ Pueden los usuarios visualizar los programas que tiene StartUPC.
++ Pueden los usuarios ver los testimonios y cifras de los resultados de estos proyectos.
++ Pueden los usuarios ver las conferencias y eventos
 
 ### Como [Tipo Usuario 2]:
 
