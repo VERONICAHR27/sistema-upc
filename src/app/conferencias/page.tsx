@@ -157,27 +157,7 @@ export default function Conferencias() {
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Newsletter */}
-        <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Mantente Informado
-          </h2>
-          <p className="text-gray-600 mb-6">
-            Suscríbete a nuestro newsletter y recibe notificaciones sobre nuevas conferencias y eventos.
-          </p>
-          <div className="max-w-md mx-auto flex gap-2">
-            <input 
-              type="email" 
-              placeholder="Tu email" 
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-            />
-            <button className="bg-gradient-to-r from-pink-500 to-red-500 text-white px-6 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all">
-              Suscribirse
-            </button>
-          </div>
-        </div>
+        </div> 
       </div>
     </div>
   );
