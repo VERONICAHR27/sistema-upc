@@ -1,127 +1,86 @@
+'use client';
+
+import { useConvocatorias } from '@/contexts/ConvocatoriaContext';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 
 export default function Convocatoria() {
+  const { getActiva } = useConvocatorias();
+  const convocatoria = getActiva();
+
+  if (!convocatoria) {
     return (
-        <div className="min-h-screen bg-gray-50">
-            <Navbar />
-
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                {/* Header */}
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                        Inscripción Aceleración StartUPC 2025-1
-                    </h1>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                        StartUPC es la aceleradora de negocios de la Universidad Peruana de Ciencias Aplicadas, dedicada a potenciar startups innovadoras con alto potencial de crecimiento.
-                    </p>
-                    <p></p>
-                </div>
-
-                {/* Timeline */}
-                <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Cronograma de la Convocatoria</h2>
-                    <div className="space-y-6">
-                        {[
-                            { date: 'Del 23 de junio al 23 de julio.', title: 'Convocatoria', status: 'active' },
-                            { date: 'del 04 de agosto al 22 de agosto.', title: 'Evaluación', status: 'upcoming' },
-                            { date: '23 de agosto.', title: 'Anuncio de Ganadores', status: 'upcoming' },
-                            { date: '27 de agosto del 2024 hasta el 20 de febrero del 2025', title: 'Duracion del proyecto', status: 'upcoming' }
-                        ].map((item, index) => (
-                            <div key={index} className="flex items-center">
-                                <div className={`w-4 h-4 rounded-full mr-4 ${item.status === 'active' ? 'bg-pink-500' : 'bg-gray-300'
-                                    }`}></div>
-                                <div>
-                                    <h3 className="font-semibold text-gray-900">{item.title}</h3>
-                                    <p className="text-gray-600">{item.date}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Requirements */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-                    <div className="bg-white rounded-lg shadow-lg p-8">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6">Requisitos</h2>
-                        <ul className="space-y-3">
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-pink-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                Demo funcional
-                            </li>
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-pink-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                2 a 4 fundadores
-                            </li>
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-pink-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                +30 usuarios activos o +3K USD en ingresos anuales
-                            </li>
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-pink-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                Antigüedad menor a 4 años
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="bg-white rounded-lg shadow-lg p-8">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6">¿Qué te ofrece el programa?</h2>
-                        <ul className="space-y-3">
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-pink-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                6 meses de aceleración intensiva
-                            </li>
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-pink-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                               +70 mentores de LATAM
-                            </li>
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-pink-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                Acceso a fondos de inversión y alianzas internacionales
-                            </li>
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-pink-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                Acompañamiento post-programa por 12 meses
-                            </li>
-                             <li className="flex items-start">
-                                <svg className="w-5 h-5 text-pink-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                Comunidad y beneficios exclusivos
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                {/* CTA */}
-                <div className="bg-gradient-to-r from-fuchsia-500 to-red-500 rounded-lg shadow-lg p-8 text-center text-white">
-                    <h2 className="text-3xl font-bold mb-4">¿Listo para participar?</h2>
-                    <p className="text-xl mb-6 opacity-90">
-                        ¡No pierdas esta oportunidad única de hacer realidad tu proyecto!
-                    </p>
-                    <Link 
-                        href="/auth/signin"
-                        className="inline-block bg-white text-fuchsia-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors border-2 border-white hover:border-gray-200"
-                    >
-                        Inscríbete Ahora
-                    </Link>
-                </div>
-            </div>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <div className="max-w-7xl mx-auto px-4 py-12 flex flex-col items-center justify-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">¡Pronto abriremos nuevas convocatorias!</h1>
+          <p className="text-lg text-gray-600 mb-6 text-center">
+            Te invitamos a estar atento a nuestras redes sociales para conocer las próximas oportunidades.<br />
+            Síguenos en <a href="https://www.facebook.com/startupc" target="_blank" rel="noopener noreferrer" className="text-pink-600 font-semibold underline">Facebook</a> y <a href="https://www.instagram.com/startupc" target="_blank" rel="noopener noreferrer" className="text-pink-600 font-semibold underline">Instagram</a>.
+          </p>
         </div>
+      </div>
     );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      <header className="bg-gradient-to-r from-pink-500 to-red-500 py-12 mb-8">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h1 className="text-5xl font-extrabold text-white mb-4">{convocatoria.title}</h1>
+          <p className="text-xl text-white mb-2">
+            Fecha límite:{' '}
+            <span className="font-semibold">{convocatoria.deadline}</span>
+          </p>
+          <p className="text-lg text-white mb-4">
+            Tipo de convocatoria: <span className="font-semibold">{convocatoria.type}</span>
+          </p>
+          <a
+            href="#postula"
+            className="inline-block bg-white text-pink-600 font-bold px-8 py-3 rounded-lg shadow hover:bg-pink-50 transition"
+          >
+            ¡Postula ahora!
+          </a>
+        </div>
+      </header>
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Requisitos para participar</h2>
+        <ul className="list-disc pl-6 text-gray-700 mb-8 space-y-2">
+          <li>Ser estudiante, egresado o docente de la UPC.</li>
+          <li>Tener una idea o proyecto innovador con potencial de impacto.</li>
+          <li>Completar el formulario de postulación antes de la fecha límite.</li>
+          <li>Contar con un equipo de trabajo (mínimo 2 personas).</li>
+          <li>Disponibilidad para participar en las actividades del programa.</li>
+        </ul>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Cronograma de la Convocatoria</h2>
+        <div className="space-y-6 mb-12">
+          {convocatoria.cronograma?.map((item, index) => (
+            <div key={index} className="flex items-center">
+              <div className={`w-4 h-4 rounded-full mr-4 ${item.status === 'active' ? 'bg-pink-500' : 'bg-gray-300'}`}></div>
+              <div>
+                <h3 className="font-semibold text-gray-900">{item.title}</h3>
+                <p className="text-gray-600">{item.date}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* CTA sección */}
+        <section id="postula" className="bg-pink-50 rounded-lg p-8 text-center shadow">
+          <h2 className="text-2xl font-bold text-pink-600 mb-4">¿Listo para transformar tu idea?</h2>
+          <p className="text-lg text-gray-700 mb-6">
+            Completa el formulario y da el primer paso para ser parte del ecosistema StartUPC.
+          </p>
+          <a
+            href="https://forms.gle/tu-formulario"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold px-8 py-3 rounded-lg shadow hover:from-pink-600 hover:to-red-600 transition"
+          >
+            Ir al formulario de postulación
+          </a>
+        </section>
+      </div>
+    </div>
+  );
 }

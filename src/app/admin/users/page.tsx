@@ -9,17 +9,19 @@ import { FaPlus } from 'react-icons/fa';
 export type User = {
   id: number;
   name: string;
+  lastname: string;
   email: string;
-  role: 'Coordinador' | 'Startup';
+  password: string;
+  role: 'Coordinador' | 'Usuario';
 };
 
 // Datos de ejemplo (mock data)
 const initialUsers: User[] = [
-  { id: 1, name: 'Veronica H.', email: 'veronica@example.com', role: 'Coordinador' },
-  { id: 2, name: 'Johel C.', email: 'johel@example.com', role: 'Coordinador' },
-  { id: 3, name: 'EcoSolutions Team', email: 'contact@ecosolutions.com', role: 'Startup' },
-  { id: 4, name: 'HealthTech Team', email: 'contact@healthtech.com', role: 'Startup' },
-  { id: 5, name: 'EdTech Solutions', email: 'contact@edtechsolutions.com', role: 'Startup' },
+  { id: 1, name: 'Veronica H.', lastname: 'Hernandez', email: 'veronica@example.com', password: 'veronica123', role: 'Coordinador' },
+  { id: 2, name: 'Johel C.', lastname: 'Cruz', email: 'johel@example.com', password: 'johel123', role: 'Coordinador' },
+  { id: 3, name: 'EcoSolutions Team', lastname: '', email: 'contact@ecosolutions.com', password: 'ecosolutions123', role: 'Usuario' },
+  { id: 4, name: 'HealthTech Team', lastname: '', email: 'contact@healthtech.com', password: 'healthtech123', role: 'Usuario' },
+  { id: 5, name: 'EdTech Solutions', lastname: '', email: 'contact@edtechsolutions.com', password: 'edtechsolutions123', role: 'Usuario' },
 ];
 
 export default function UserManagementPage() {
@@ -43,7 +45,9 @@ export default function UserManagementPage() {
       const updatedUser: User = {
         id: user.id,
         name: user.name,
+        lastname: user.lastname,
         email: user.email,
+        password: user.password,
         role: user.role,
       };
       setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
@@ -52,7 +56,9 @@ export default function UserManagementPage() {
       const newUser: User = {
         id: Date.now(),
         name: user.name,
+        lastname: user.lastname,
         email: user.email,
+        password: user.password,
         role: user.role,
       };
       setUsers([...users, newUser]);

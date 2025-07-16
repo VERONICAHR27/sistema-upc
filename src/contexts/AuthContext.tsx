@@ -2,11 +2,14 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-type User = {
+// ✅ Actualiza el tipo User para incluir lastname y password
+export type User = {
   id: number;
   name: string;
+  lastname: string;
   email: string;
-  role: 'Coordinador' | 'Startup';
+  password: string;
+  role: 'Coordinador' | 'Usuario' | 'Startup';
 };
 
 type AuthContextType = {
@@ -19,27 +22,30 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Usuarios de ejemplo para simular autenticación
-const MOCK_USERS = [
+const MOCK_USERS: User[] = [
   { 
     id: 1, 
-    name: 'Veronica H.', 
+    name: 'Veronica',
+    lastname: 'H.',
     email: 'admin@startupc.com', 
     password: '123456', 
-    role: 'Coordinador' as const 
+    role: 'Coordinador'
   },
   { 
     id: 2, 
-    name: 'Johel C.', 
+    name: 'Johel',
+    lastname: 'C.',
     email: 'johel@startupc.com', 
     password: '123456', 
-    role: 'Coordinador' as const 
+    role: 'Coordinador'
   },
   { 
     id: 3, 
-    name: 'EcoSolutions Team', 
+    name: 'EcoSolutions',
+    lastname: 'Team',
     email: 'startup@test.com', 
     password: '123456', 
-    role: 'Startup' as const 
+    role: 'Startup'
   }
 ];
 
@@ -47,7 +53,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // ✅ Verificar si hay usuario en localStorage al cargar
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
@@ -62,23 +67,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-    
-    // Simular delay de API
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
     const foundUser = MOCK_USERS.find(
       (u) => u.email === email && u.password === password
     );
-    
     if (foundUser) {
       const { ...userWithoutPassword } = foundUser;
       setUser(userWithoutPassword);
-      // ✅ Guardar en localStorage para persistencia
       localStorage.setItem('user', JSON.stringify(userWithoutPassword));
       setIsLoading(false);
       return true;
     }
-    
     setIsLoading(false);
     return false;
   };
