@@ -1,4 +1,5 @@
 import Navbar from '@/components/Navbar';
+import Link from 'next/link';
 
 export default function Testimonios() {
   const testimonials = [
@@ -104,9 +105,12 @@ export default function Testimonios() {
           <p className="text-xl mb-6 opacity-90">
             Únete a nuestra comunidad de emprendedores y comienza tu journey hacia el éxito.
           </p>
-          <button className="bg-white text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-red-500 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors border-2 border-white">
-            Postúlate Ahora
-          </button>
+          <Link 
+            href="/auth/signin"
+            className="inline-block bg-white text-fuchsia-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors border-2 border-white hover:border-gray-200"
+          >
+            Inscribete ahora
+          </Link>
         </div>
       </div>
     </div>

@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+/// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+
+model Startup {
+  id                    String   @id @default(cuid())
+  nombreComercial       String
+  razonSocial          String
+  numeroFiscal         String
+  sitioWeb             String?
+  logotipo             String?
+  descripcion          String
+  industria            String
+  industriaOther       String?
+  fechaFundacion       DateTime
+  problemaOportunidad  String
+  solucion             String
+  modeloNegocio        String
+  ventajaCompetitiva   String
+  necesidades          String[]
+  necesidadesOther     String?
+  programaAceleracion  String
+  nombrePrograma       String?
+  aprendizajes         String?
+  aplicacionAprendizajes String?
+  videoPresentacion    String?
+  tieneVentas          String
+  pilotoDemo           String
+  ubicacionSolucion    String
+  montoVentas          String?
+  tecnologia           String
+  areaDesarrollo       String
+  inversionExterna     String
+  comoSeEntero         String
+  comoSeEnteroOther    String?
+  aceptaPrivacidad     String
+  estado               String   @default("PENDIENTE") // PENDIENTE, EN_REVISION, ACEPTADA, RECHAZADA
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  
+  miembrosEquipo       TeamMember[]
+  
+  @@map("startups")
+}
+
+model TeamMember {
+  id                String   @id @default(cuid())
+  nombres           String
+  apellidos         String
+  rol               String
+  tiempoCompleto    String
+  fechaNacimiento   DateTime
+  lugarNacimiento   String
+  direccion         String
+  tipoDocumento     String
+  numeroDocumento   String
+  telefono          String
+  email             String
+  linkedin          String?
+  
+  startupId         String
+  startup           Startup  @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  @@map("team_members")
+}
+
