@@ -1,4 +1,5 @@
 import Navbar from '@/components/Navbar';
+import Link from 'next/link';
 
 export default function Convocatoria() {
     return (
@@ -113,9 +114,12 @@ export default function Convocatoria() {
                     <p className="text-xl mb-6 opacity-90">
                         ¡No pierdas esta oportunidad única de hacer realidad tu proyecto!
                     </p>
-                    <button className="black px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors border-2 border-white hover:border-gray-200">
+                    <Link 
+                        href="/auth/signin"
+                        className="inline-block bg-white text-fuchsia-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors border-2 border-white hover:border-gray-200"
+                    >
                         Inscríbete Ahora
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
