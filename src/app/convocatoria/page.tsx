@@ -23,16 +23,29 @@ export default function Convocatoria() {
     );
   }
 
+  // Función para formatear la fecha a "18 de julio del 2025"
+  function formatFecha(fecha: string) {
+    if (!fecha) return '';
+    const meses = [
+      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+    ];
+    const [anio, mes, dia] = fecha.split('-');
+    if (!anio || !mes || !dia) return fecha;
+    return `${parseInt(dia)} de ${meses[parseInt(mes, 10) - 1]} del ${anio}`;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <header className="bg-gradient-to-r from-pink-500 to-red-500 py-12 mb-8">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-5xl font-extrabold text-white mb-4">{convocatoria.title}</h1>
-          <p className="text-xl text-white mb-2">
+          {/* Puedes quitar la línea de fecha límite si ya no usas ese campo */}
+          {/* <p className="text-xl text-white mb-2">
             Fecha límite:{' '}
             <span className="font-semibold">{convocatoria.deadline}</span>
-          </p>
+          </p> */}
           <p className="text-lg text-white mb-4">
             Tipo de convocatoria: <span className="font-semibold">{convocatoria.type}</span>
           </p>
@@ -60,7 +73,18 @@ export default function Convocatoria() {
               <div className={`w-4 h-4 rounded-full mr-4 ${item.status === 'active' ? 'bg-pink-500' : 'bg-gray-300'}`}></div>
               <div>
                 <h3 className="font-semibold text-gray-900">{item.title}</h3>
-                <p className="text-gray-600">{item.date}</p>
+                {/* Mostrar fechas según el tipo de etapa */}
+                {item.title === 'Convocatoria' || item.title === 'Evaluación' || item.title === 'Duracion del proyecto' ? (
+                  <p className="text-gray-600">
+                    {item.date
+                      ? `Desde el ${formatFecha(item.date)}`
+                      : 'Sin definir'}
+                  </p>
+                ) : (
+                  <p className="text-gray-600">
+                    {item.date ? formatFecha(item.date) : 'Sin definir'}
+                  </p>
+                )}
               </div>
             </div>
           ))}
@@ -71,14 +95,12 @@ export default function Convocatoria() {
           <p className="text-lg text-gray-700 mb-6">
             Completa el formulario y da el primer paso para ser parte del ecosistema StartUPC.
           </p>
-          <a
-            href="https://forms.gle/tu-formulario"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/auth/signin"
             className="inline-block bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold px-8 py-3 rounded-lg shadow hover:from-pink-600 hover:to-red-600 transition"
           >
             Ir al formulario de postulación
-          </a>
+          </Link>
         </section>
       </div>
     </div>

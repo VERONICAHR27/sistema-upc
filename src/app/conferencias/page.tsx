@@ -1,25 +1,106 @@
 'use client';
 
+import { useState } from 'react';
 import { useEvents } from '@/contexts/EventContext';
 import Navbar from '@/components/Navbar';
+
+interface Event {
+  id: number;
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  type: string;
+  attendees: number;
+  status: string;
+  featured?: boolean;
+}
+// import { send } from 'resent'; // Desactivado temporalmente
 
 export default function Conferencias() {
   const { events } = useEvents();
   const featuredEvent = events.find(e => e.featured);
-  const pastEvents = [
-    {
-      date: "10 Mayo 2023",
-      views: "1.2k",
-      duration: "1h 30min",
-      title: "Innovación en la Era Digital",
-      speaker: "Dr. Juan Pérez"
-    }
-  ];
+
+  // Obtener fecha actual (solo fecha, sin hora)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Próximas conferencias: fecha igual o posterior a hoy
+  const upcomingEvents = events
+    .filter(e => {
+      const eventDate = new Date(e.date);
+      eventDate.setHours(0, 0, 0, 0);
+      return eventDate >= today;
+    })
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  
+  // Conferencias pasadas: fecha anterior a hoy
+  const pastEvents = events
+    .filter(e => {
+      const eventDate = new Date(e.date);
+      eventDate.setHours(0, 0, 0, 0);
+      return eventDate < today;
+    })
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  // Modal states
+  const [showModal, setShowModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  // Reservar lugar modal states
+  const [showReserveModal, setShowReserveModal] = useState(false);
+  const [reserveForm, setReserveForm] = useState({
+    nombre: '',
+    dni: '',
+    email: '',
+  });
+  const [reserveLoading, setReserveLoading] = useState(false);
+  const [reserveSuccess, setReserveSuccess] = useState<string | null>(null);
+  const [reserveError, setReserveError] = useState<string | null>(null);
+
+  const handleOpenModal = (event: Event) => {
+    setSelectedEvent(event);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedEvent(null);
+  };
+
+  // Abrir modal de reservar lugar
+  const handleOpenReserveModal = () => {
+    setShowReserveModal(true);
+    setReserveForm({ nombre: '', dni: '', email: '' });
+    setReserveSuccess(null);
+    setReserveError(null);
+  };
+
+  const handleCloseReserveModal = () => {
+    setShowReserveModal(false);
+    setReserveForm({ nombre: '', dni: '', email: '' });
+    setReserveSuccess(null);
+    setReserveError(null);
+  };
+
+  // Enviar email con resent.com (desactivado temporalmente)
+  const handleReserveSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setReserveLoading(true);
+    setReserveSuccess(null);
+    setReserveError(null);
+
+    // Desactivado: Solo muestra mensaje de éxito simulado
+    setTimeout(() => {
+      setReserveSuccess('¡Reserva realizada! (Funcionalidad de correo desactivada temporalmente)');
+      setReserveLoading(false);
+      setReserveForm({ nombre: '', dni: '', email: '' });
+    }, 1200);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-12">
@@ -51,7 +132,10 @@ export default function Conferencias() {
                 <div className="text-center">
                   <div className="bg-white/10 rounded-lg p-8">
                     <div className="text-6xl mb-4">🎯</div>
-                    <button className="bg-white text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-700 to-red-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors border-2 border-white">
+                    <button
+                      className="bg-white text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-700 to-red-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors border-2 border-white"
+                      onClick={handleOpenReserveModal}
+                    >
                       Reservar Lugar
                     </button>
                   </div>
@@ -71,16 +155,16 @@ export default function Conferencias() {
           </div>
         </div>
 
-        {/* Upcoming Events */}
+        {/* Próximas Conferencias */}
         <div className="mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Próximas Conferencias</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.length === 0 && (
+            {upcomingEvents.length === 0 && (
               <div className="col-span-3 text-center text-gray-500 py-12">
                 No hay eventos programados actualmente.
               </div>
             )}
-            {events.map(event => (
+            {upcomingEvents.map(event => (
               <div key={event.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-800 mb-2">{event.title}</h3>
@@ -109,39 +193,134 @@ export default function Conferencias() {
           </div>
         </div>
 
-        {/* Past Events */}
+        {/* Conferencias Pasadas */}
         <div className="mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Conferencias Pasadas</h2>
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="divide-y divide-gray-200">
-              {pastEvents.map((event, index) => (
-                <div key={index} className="p-6 hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-4 mb-2">
-                        <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">
-                          {event.date}
-                        </span>
-                        <span className="text-sm text-gray-500">👁️ {event.views} vistas</span>
-                        <span className="text-sm text-gray-500">⏱️ {event.duration}</span>
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1">{event.title}</h3>
-                      <p className="text-gray-600">{event.speaker}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <button className="bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all">
-                        Ver Grabación
-                      </button>
-                      <button className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                        Descargar
-                      </button>
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {pastEvents.length === 0 && (
+              <div className="col-span-3 text-center text-gray-500 py-12">
+                No hay conferencias pasadas registradas.
+              </div>
+            )}
+            {pastEvents.map((event, index) => (
+              <div
+                key={event.id || index}
+                className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow flex flex-col"
+              >
+                <div className="p-6 flex-1 flex flex-col">
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">{event.title}</h3>
+                  <div className="flex items-center text-gray-600 mb-2">
+                    <span className="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-sm font-medium mr-2">{event.date}</span>
+                    <span className="bg-white/20 px-3 py-1 rounded-full text-sm">{event.time}</span>
+                  </div>
+                  <p className="text-gray-600 mb-2">{event.location}</p>
+                  <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">{event.type}</span>
+                  <div className="mt-4 text-sm text-gray-500">
+                    {event.attendees} asistentes
+                  </div>
+                  <div className="mt-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      event.status === 'Programado' ? 'bg-blue-100 text-blue-800' :
+                      event.status === 'Completado' ? 'bg-green-100 text-green-800' :
+                      event.status === 'Cancelado' ? 'bg-red-100 text-red-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {event.status}
+                    </span>
+                  </div>
+                  <div className="mt-4 flex gap-2">
+                    <button
+                      className="bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 py-2 rounded-lg hover:from-pink-600 hover:to-red-600 transition-all"
+                      onClick={() => handleOpenModal(event)}
+                    >
+                      Ver Grabación
+                    </button>
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Modal para ver grabación */}
+        {showModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+            <div className="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full border border-pink-200">
+              <h3 className="text-xl font-bold text-pink-700 mb-4">Solicitar Grabación: {selectedEvent?.title}</h3>
+              <p className="text-gray-700 mb-6">
+                Para obtener la grabación de esta conferencia ({selectedEvent?.date}) escribe al correo <span className="font-semibold text-pink-600">conferencias@startupc.com</span>.
+              </p>
+              <div className="flex justify-end">
+                <button
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 rounded bg-pink-600 text-white font-bold hover:bg-pink-700 transition"
+                >
+                  Cerrar
+                </button>
+              </div>
             </div>
           </div>
-        </div> 
+        )}
+
+        {/* Modal para reservar lugar */}
+        {showReserveModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+            <div className="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full border border-pink-200">
+              <h3 className="text-xl font-bold text-pink-700 mb-4">Reservar Lugar</h3>
+              <form onSubmit={handleReserveSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nombres completos</label>
+                  <input
+                    type="text"
+                    required
+                    value={reserveForm.nombre}
+                    onChange={e => setReserveForm(f => ({ ...f, nombre: e.target.value }))}
+                    className="border px-3 py-2 rounded w-full"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">DNI</label>
+                  <input
+                    type="text"
+                    required
+                    value={reserveForm.dni}
+                    onChange={e => setReserveForm(f => ({ ...f, dni: e.target.value }))}
+                    className="border px-3 py-2 rounded w-full"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                  <input
+                    type="email"
+                    required
+                    value={reserveForm.email}
+                    onChange={e => setReserveForm(f => ({ ...f, email: e.target.value }))}
+                    className="border px-3 py-2 rounded w-full"
+                  />
+                </div>
+                {reserveError && <p className="text-red-600">{reserveError}</p>}
+                {reserveSuccess && <p className="text-green-600">{reserveSuccess}</p>}
+                <div className="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={handleCloseReserveModal}
+                    className="px-4 py-2 rounded bg-gray-200 text-gray-700 font-bold hover:bg-gray-300 transition"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={reserveLoading}
+                    className="px-4 py-2 rounded bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold shadow hover:from-pink-600 hover:to-red-600 transition"
+                  >
+                    {reserveLoading ? 'Enviando...' : 'Reservar'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
