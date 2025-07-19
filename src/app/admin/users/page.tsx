@@ -12,7 +12,7 @@ export type User = {
   lastname: string;
   email: string;
   password: string;
-  role: 'Coordinador' | 'Usuario';
+  role: 'Coordinador' | 'Usuario' ;
 };
 
 // Datos de ejemplo (mock data)
@@ -76,7 +76,7 @@ export default function UserManagementPage() {
     <div className="min-h-screen bg-gray-100 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">Gestión del Ecosistema</h1>
+          <h1 className="text-3xl font-bold text-gray-800">Gestión de usuarios</h1>
           <button
             onClick={() => handleOpenModal()}
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2"

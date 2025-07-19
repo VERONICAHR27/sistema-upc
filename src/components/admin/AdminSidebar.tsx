@@ -14,8 +14,8 @@ import {
   FaCog,
   FaBell,
   FaCalendarAlt,
-  FaAward,
-  FaBuilding,
+  // FaAward,
+  // FaBuilding,
   FaChevronDown,
   FaChevronUp
 } from 'react-icons/fa';
@@ -24,46 +24,46 @@ import { useState } from 'react';
 const menuItems = [
   { 
     href: '/admin/dashboard', 
-    label: 'Dashboard Estratégico', 
+    label: 'Dashboard', 
     icon: FaHome,
-    description: 'Métricas y KPIs generales'
+    description: '¿Como vamos con el programa?'
   },
   { 
     href: '/admin/users', 
-    label: 'Gestión del Ecosistema', 
+    label: 'Usuarios', 
     icon: FaUsers,
-    description: 'Coordinadores y startups'
+    description: 'Registros y roles'
   },
   { 
-    href: '/admin/tracking', 
-    label: 'Seguimiento de Proyectos', 
-    icon: FaChartLine,
-    description: 'Progreso y acompañamiento'
+  href: '/admin/tracking', 
+  label: 'Postulaciones', 
+  icon: FaChartLine,
+  description: 'Buzón de postulaciones y seguimiento'
   },
   { 
     href: '/admin/applications', 
     label: 'Convocatorias', 
     icon: FaFileAlt,
-    description: 'Gestión de postulaciones'
+    description: 'Creación y activación'
   },
   { 
     href: '/admin/events', 
-    label: 'Eventos y Conferencias', 
+    label: 'Eventos', 
     icon: FaCalendarAlt,
     description: 'Programación de actividades'
   },
-  { 
-    href: '/admin/mentors', 
-    label: 'Red de Mentores', 
-    icon: FaAward,
-    description: 'Gestión de expertos'
-  },
-  { 
-    href: '/admin/companies', 
-    label: 'Empresas Colaboradoras', 
-    icon: FaBuilding,
-    description: 'Partners del ecosistema'
-  },
+  // { 
+  //   href: '/admin/mentors', 
+  //   label: 'Red de Mentores', 
+  //   icon: FaAward,
+  //   description: 'Gestión de expertos'
+  // },
+  // { 
+  //   href: '/admin/companies', 
+  //   label: 'Empresas Colaboradoras', 
+  //   icon: FaBuilding,
+  //   description: 'Partners del ecosistema'
+  // },
 ];
 
 const quickActions = [

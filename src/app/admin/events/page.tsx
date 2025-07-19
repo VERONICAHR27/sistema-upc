@@ -155,132 +155,138 @@ export default function EventsPage() {
 
         {/* Events Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {events.map((event) => (
-            <div key={event.id} className={`bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow ${event.featured ? 'border-2 border-yellow-400' : ''}`}>
-              {editId === event.id ? (
-                <div>
-                  <input
-                    type="text"
-                    value={editForm.title}
-                    onChange={e => setEditForm(f => ({ ...f, title: e.target.value }))}
-                    className="border px-2 py-1 rounded w-full mb-2"
-                  />
-                  <input
-                    type="date"
-                    value={editForm.date}
-                    onChange={e => setEditForm(f => ({ ...f, date: e.target.value }))}
-                    className="border px-2 py-1 rounded w-full mb-2"
-                  />
-                  <input
-                    type="time"
-                    value={editForm.time}
-                    onChange={e => setEditForm(f => ({ ...f, time: e.target.value }))}
-                    className="border px-2 py-1 rounded w-full mb-2"
-                  />
-                  <input
-                    type="text"
-                    value={editForm.location}
-                    onChange={e => setEditForm(f => ({ ...f, location: e.target.value }))}
-                    className="border px-2 py-1 rounded w-full mb-2"
-                  />
-                  <input
-                    type="number"
-                    value={editForm.attendees}
-                    onChange={e => setEditForm(f => ({ ...f, attendees: Number(e.target.value) }))}
-                    className="border px-2 py-1 rounded w-full mb-2"
-                  />
-                  <input
-                    type="text"
-                    value={editForm.type}
-                    onChange={e => setEditForm(f => ({ ...f, type: e.target.value }))}
-                    className="border px-2 py-1 rounded w-full mb-2"
-                  />
-                  <select
-                    value={editForm.status}
-                    onChange={e => setEditForm(f => ({ ...f, status: e.target.value }))}
-                    className="border px-2 py-1 rounded w-full mb-2"
-                  >
-                    <option value="Programado">Programado</option>
-                    <option value="Completado">Completado</option>
-                    <option value="Cancelado">Cancelado</option>
-                  </select>
-                  <div className="flex gap-2 mt-2">
-                    <button
-                      onClick={() => handleSaveEdit(event.id)}
-                      className="px-3 py-1 bg-green-500 text-white rounded font-bold"
+          {events.map((event) => {
+            // Solo se pueden destacar eventos futuros o del día actual
+            const isUpcoming =
+              new Date(event.date).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0);
+
+            return (
+              <div key={event.id} className={`bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow ${event.featured ? 'border-2 border-yellow-400' : ''}`}>
+                {editId === event.id ? (
+                  <div>
+                    <input
+                      type="text"
+                      value={editForm.title}
+                      onChange={e => setEditForm(f => ({ ...f, title: e.target.value }))}
+                      className="border px-2 py-1 rounded w-full mb-2"
+                    />
+                    <input
+                      type="date"
+                      value={editForm.date}
+                      onChange={e => setEditForm(f => ({ ...f, date: e.target.value }))}
+                      className="border px-2 py-1 rounded w-full mb-2"
+                    />
+                    <input
+                      type="time"
+                      value={editForm.time}
+                      onChange={e => setEditForm(f => ({ ...f, time: e.target.value }))}
+                      className="border px-2 py-1 rounded w-full mb-2"
+                    />
+                    <input
+                      type="text"
+                      value={editForm.location}
+                      onChange={e => setEditForm(f => ({ ...f, location: e.target.value }))}
+                      className="border px-2 py-1 rounded w-full mb-2"
+                    />
+                    <input
+                      type="number"
+                      value={editForm.attendees}
+                      onChange={e => setEditForm(f => ({ ...f, attendees: Number(e.target.value) }))}
+                      className="border px-2 py-1 rounded w-full mb-2"
+                    />
+                    <input
+                      type="text"
+                      value={editForm.type}
+                      onChange={e => setEditForm(f => ({ ...f, type: e.target.value }))}
+                      className="border px-2 py-1 rounded w-full mb-2"
+                    />
+                    <select
+                      value={editForm.status}
+                      onChange={e => setEditForm(f => ({ ...f, status: e.target.value }))}
+                      className="border px-2 py-1 rounded w-full mb-2"
                     >
-                      Guardar
-                    </button>
-                    <button
-                      onClick={handleCancelEdit}
-                      className="px-3 py-1 bg-gray-300 text-gray-700 rounded font-bold"
-                    >
-                      Cancelar
-                    </button>
+                      <option value="Programado">Programado</option>
+                      <option value="Completado">Completado</option>
+                      <option value="Cancelado">Cancelado</option>
+                    </select>
+                    <div className="flex gap-2 mt-2">
+                      <button
+                        onClick={() => handleSaveEdit(event.id)}
+                        className="px-3 py-1 bg-green-500 text-white rounded font-bold"
+                      >
+                        Guardar
+                      </button>
+                      <button
+                        onClick={handleCancelEdit}
+                        className="px-3 py-1 bg-gray-300 text-gray-700 rounded font-bold"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <>
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-lg font-semibold text-gray-800 line-clamp-2">
-                      {event.title}
-                      {event.featured && (
-                        <span className="ml-2 text-yellow-500" title="Evento destacado">
+                ) : (
+                  <>
+                    <div className="flex justify-between items-start mb-4">
+                      <h3 className="text-lg font-semibold text-gray-800 line-clamp-2">
+                        {event.title}
+                        {event.featured && (
+                          <span className="ml-2 text-yellow-500" title="Evento destacado">
+                            <FaStar />
+                          </span>
+                        )}
+                      </h3>
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(event.status)}`}>
+                        {event.status}
+                      </span>
+                    </div>
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center text-gray-600">
+                        <FaCalendarAlt className="mr-2 h-4 w-4" />
+                        <span className="text-sm">{event.date} - {event.time}</span>
+                      </div>
+                      <div className="flex items-center text-gray-600">
+                        <FaMapMarkerAlt className="mr-2 h-4 w-4" />
+                        <span className="text-sm">{event.location}</span>
+                      </div>
+                      <div className="flex items-center text-gray-600">
+                        <FaUsers className="mr-2 h-4 w-4" />
+                        <span className="text-sm">{event.attendees} asistentes</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
+                        {event.type}
+                      </span>
+                      <div className="flex space-x-2">
+                        <button
+                          className={`text-yellow-500 hover:text-yellow-600 p-2 ${!isUpcoming ? 'opacity-40 cursor-not-allowed' : ''}`}
+                          title={isUpcoming ? "Destacar" : "Solo puedes destacar eventos próximos"}
+                          onClick={() => isUpcoming && setFeaturedEvent(event.id)}
+                          disabled={!isUpcoming || event.featured}
+                        >
                           <FaStar />
-                        </span>
-                      )}
-                    </h3>
-                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(event.status)}`}>
-                      {event.status}
-                    </span>
-                  </div>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-gray-600">
-                      <FaCalendarAlt className="mr-2 h-4 w-4" />
-                      <span className="text-sm">{event.date} - {event.time}</span>
+                        </button>
+                        <button
+                          className="text-blue-500 hover:text-blue-700 p-2"
+                          title="Editar"
+                          onClick={() => handleEdit(event)}
+                        >
+                          <FaEdit size={16} />
+                        </button>
+                        <button
+                          className="text-red-500 hover:text-red-700 p-2"
+                          title="Eliminar"
+                          onClick={() => deleteEvent(event.id)}
+                        >
+                          <FaTrash size={16} />
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex items-center text-gray-600">
-                      <FaMapMarkerAlt className="mr-2 h-4 w-4" />
-                      <span className="text-sm">{event.location}</span>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <FaUsers className="mr-2 h-4 w-4" />
-                      <span className="text-sm">{event.attendees} asistentes</span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
-                      {event.type}
-                    </span>
-                    <div className="flex space-x-2">
-                      <button
-                        className="text-yellow-500 hover:text-yellow-600 p-2"
-                        title="Destacar"
-                        onClick={() => setFeaturedEvent(event.id)}
-                        disabled={event.featured}
-                      >
-                        <FaStar />
-                      </button>
-                      <button
-                        className="text-blue-500 hover:text-blue-700 p-2"
-                        title="Editar"
-                        onClick={() => handleEdit(event)}
-                      >
-                        <FaEdit size={16} />
-                      </button>
-                      <button
-                        className="text-red-500 hover:text-red-700 p-2"
-                        title="Eliminar"
-                        onClick={() => deleteEvent(event.id)}
-                      >
-                        <FaTrash size={16} />
-                      </button>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          ))}
+                  </>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
