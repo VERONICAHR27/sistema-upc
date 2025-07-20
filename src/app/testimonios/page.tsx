@@ -1,4 +1,5 @@
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import Link from 'next/link';
 
 export default function Testimonios() {
@@ -27,7 +28,7 @@ export default function Testimonios() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50">
       <Navbar />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -106,13 +107,15 @@ export default function Testimonios() {
             Únete a nuestra comunidad de emprendedores y comienza tu journey hacia el éxito.
           </p>
           <Link 
-            href="/auth/signin"
+            href="/convocatoria"
             className="inline-block bg-white text-fuchsia-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors border-2 border-white hover:border-gray-200"
           >
-            Inscribete ahora
+            Ver Convocatorias
           </Link>
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 }

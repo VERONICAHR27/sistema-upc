@@ -13,8 +13,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  role      String   @default("USER") // USER, ADMIN
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  eventReservations EventReservation[]
+  
+  @@map("users")
+}
 
+model Convocatoria {
+  id         String   @id @default(cuid())
+  title      String
+  status     String   @default("BORRADOR") // BORRADOR, ACTIVA, CERRADA
+  principal  Boolean  @default(false)      // Para marcar cual es la convocatoria principal
+  deadline   String
+  type       String
+  basesUrl   String?  // URL para descargar las bases
+  cronograma Json?    // Almacena el cronograma como JSON
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  startups   Startup[]
+  
+  @@map("convocatorias")
+}
 
+model Event {
+  id        String   @id @default(cuid())
+  title     String
+  date      String
+  time      String
+  location  String
+  type      String
+  status    String   @default("ACTIVO")
+  featured  Boolean  @default(false)
+  attendees Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  reservations EventReservation[]
+  
+  @@map("events")
+}
+
+model EventReservation {
+  id      String @id @default(cuid())
+  name    String
+  email   String
+  phone   String?
+  
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  userId  String?
+  user    User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  createdAt DateTime @default(now())
+  
+  @@unique([eventId, email])
+  @@map("event_reservations")
+}
 
 model Startup {
   id                    String   @id @default(cuid())
@@ -51,6 +114,9 @@ model Startup {
   estado               String   @default("PENDIENTE") // PENDIENTE, EN_REVISION, ACEPTADA, RECHAZADA
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
+  
+  convocatoriaId       String?
+  convocatoria         Convocatoria? @relation(fields: [convocatoriaId], references: [id], onDelete: SetNull)
   
   miembrosEquipo       TeamMember[]
   

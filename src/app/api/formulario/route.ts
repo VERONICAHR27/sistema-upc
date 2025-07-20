@@ -4,6 +4,13 @@ import { z } from 'zod';
 
 const prisma = new PrismaClient();
 
+type ConvocatoriaRaw = {
+  id: string;
+  title: string;
+  status: string;
+  principal: boolean;
+};
+
 // Función para convertir fecha DD/MM/YYYY a Date válido
 const parseDate = (dateStr: string): Date => {
   if (!dateStr) throw new Error('Fecha vacía');
@@ -142,6 +149,27 @@ export async function POST(request: NextRequest) {
     // Validar datos con Zod
     const validatedData = FormularioSchema.parse(body);
     
+    // Buscar convocatoria específica o activa principal
+    let convocatoria = null;
+    
+    if (body.convocatoriaId) {
+      // Buscar por ID específico
+      const convocatoriaEspecifica = await prisma.$queryRaw`
+        SELECT * FROM convocatorias 
+        WHERE id = ${body.convocatoriaId}
+        LIMIT 1
+      `;
+      convocatoria = Array.isArray(convocatoriaEspecifica) ? convocatoriaEspecifica[0] : null;
+    } else {
+      // Buscar la convocatoria activa principal como fallback
+      const convocatoriaActiva = await prisma.$queryRaw`
+        SELECT * FROM convocatorias 
+        WHERE status = 'ACTIVA' AND principal = true 
+        LIMIT 1
+      `;
+      convocatoria = Array.isArray(convocatoriaActiva) ? convocatoriaActiva[0] : null;
+    }
+    
     // Crear startup en la base de datos
     const startup = await prisma.startup.create({
       data: {
@@ -174,6 +202,7 @@ export async function POST(request: NextRequest) {
         comoSeEntero: validatedData.comoSeEntero,
         comoSeEnteroOther: validatedData.comoSeEnteroOther || null,
         aceptaPrivacidad: validatedData.aceptaPrivacidad,
+        convocatoriaId: (convocatoria as ConvocatoriaRaw)?.id || null, // Conectar con convocatoria activa
         miembrosEquipo: {
           create: validatedData.miembrosEquipo.map(member => ({
             nombres: member.nombres,
@@ -192,7 +221,8 @@ export async function POST(request: NextRequest) {
         }
       },
       include: {
-        miembrosEquipo: true
+        miembrosEquipo: true,
+        convocatoria: true
       }
     });
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ChevronLeftIcon, ChevronRightIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { ZodError } from 'zod';
 import { 
@@ -80,6 +80,8 @@ interface FormDataState {
 
 export default function FormularioPostulacion() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const convocatoriaId = searchParams.get('convocatoria');
   const [currentStep, setCurrentStep] = useState(1);
   const [showMemberForm, setShowMemberForm] = useState(false);
   const [editingMemberIndex, setEditingMemberIndex] = useState<number | null>(null);
@@ -391,7 +393,10 @@ export default function FormularioPostulacion() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          convocatoriaId: convocatoriaId
+        }),
       });
       
       // Verificar si la respuesta tiene contenido

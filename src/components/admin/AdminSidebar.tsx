@@ -35,16 +35,16 @@ const menuItems = [
     description: 'Registros y roles'
   },
   { 
-  href: '/admin/tracking', 
+  href: '/admin/postulaciones', 
   label: 'Postulaciones', 
   icon: FaChartLine,
   description: 'Buzón de postulaciones y seguimiento'
   },
   { 
-    href: '/admin/applications', 
+    href: '/admin/convocatorias', 
     label: 'Convocatorias', 
     icon: FaFileAlt,
-    description: 'Creación y activación'
+    description: 'Gestión completa de convocatorias'
   },
   { 
     href: '/admin/events', 
