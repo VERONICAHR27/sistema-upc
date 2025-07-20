@@ -118,12 +118,7 @@ export default function ProgramCards() {
                             >
                                 Ver Convocatoria Actual
                             </Link>
-                            <Link
-                                href="/auth/signin"
-                                className="border border-pink-500 text-pink-500 px-6 py-3 rounded-lg font-medium hover:bg-pink-50 transition-colors"
-                            >
-                                Registrarse
-                            </Link>
+                           
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { FaPlus, FaEdit, FaTrash, FaCheck, FaTimes } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaCheck, FaTimes, FaStar } from 'react-icons/fa';
 import { useConvocatorias, Convocatoria } from '@/contexts/ConvocatoriaContext';
 
 // Tipo para cada etapa del cronograma con fechas desde/hasta
@@ -14,16 +14,17 @@ type CronoEtapa = {
 
 // Default cronograma con campos desde/hasta vacíos
 const defaultCronograma: CronoEtapa[] = [
-  { title: 'Convocatoria', desde: '', hasta: '', status: 'active' },
-  { title: 'Evaluación', desde: '', hasta: '', status: 'upcoming' },
-  { title: 'Anuncio de Ganadores', desde: '', hasta: '', status: 'upcoming' },
-  { title: 'Duracion del proyecto', desde: '', hasta: '', status: 'upcoming' }
+  { title: 'Convocatoria', desde: '', hasta: '', status: '' },
+  { title: 'Evaluación', desde: '', hasta: '', status: '' },
+  { title: 'Anuncio de Ganadores', desde: '', hasta: '', status: '' },
+  { title: 'Duracion del proyecto', desde: '', hasta: '', status: '' }
 ];
 
 type ConvocatoriaForm = {
   title: string;
   deadline: string;
   type: string;
+  status?: 'ACTIVA' | 'CERRADA' | 'BORRADOR';
   cronograma: CronoEtapa[];
 };
 
@@ -39,8 +40,9 @@ export default function ApplicationsPage() {
   const {
     addConvocatoria,
     getHistorial,
-    getActiva,
+    getActivas,
     activarConvocatoria,
+    marcarPrincipal,
     editarConvocatoria,
     eliminarConvocatoria
   } = useConvocatorias();
@@ -52,7 +54,7 @@ export default function ApplicationsPage() {
     cronograma: defaultCronograma,
   });
 
-  const [editId, setEditId] = useState<number | null>(null);
+  const [editId, setEditId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<ConvocatoriaForm>({
     title: '',
     deadline: '',
@@ -61,10 +63,10 @@ export default function ApplicationsPage() {
   });
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
   const deleteTitleRef = useRef<string>('');
 
-  const openDeleteModal = (id: number, title: string) => {
+  const openDeleteModal = (id: string, title: string) => {
     setDeleteId(id);
     deleteTitleRef.current = title;
     setShowDeleteModal(true);
@@ -106,20 +108,12 @@ export default function ApplicationsPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.title || !form.type) return;
-    // Transforma el cronograma a { date, title, status }
-    const transformedCronograma = form.cronograma.map(etapa => ({
-      date: etapa.desde, // Usar 'desde' como 'date'
-      title: etapa.title,
-      status: etapa.status
-    }));
     addConvocatoria({
-      id: Date.now(),
       title: form.title,
-      status: 'Borrador',
-      applicants: 0,
-      deadline: '', // o elimina este campo si ya no lo usas
+      status: 'BORRADOR',
+      deadline: form.deadline,
       type: form.type,
-      cronograma: transformedCronograma, // Usa el formato correcto
+      cronograma: form.cronograma,
     });
     setForm({
       title: '',
@@ -135,25 +129,19 @@ export default function ApplicationsPage() {
       title: convocatoria.title,
       deadline: convocatoria.deadline,
       type: convocatoria.type,
-      cronograma: convocatoria.cronograma ? convocatoria.cronograma.map(item => ({
+      cronograma: convocatoria.cronograma ? convocatoria.cronograma.map((item: { title: string; date?: string; desde?: string; hasta?: string; status?: string }) => ({
         title: item.title,
-        desde: item.date,
-        hasta: item.date,
-        status: item.status
+        desde: item.date || item.desde || '',
+        hasta: item.date || item.hasta || '',
+        status: item.status || ''
       })) : defaultCronograma,
     });
   };
 
-  const handleSaveEdit = (id: number) => {
-    // Transforma el cronograma a { date, title, status }
-    const transformedCronograma = editForm.cronograma.map(etapa => ({
-      date: etapa.desde, // Usar 'desde' como 'date'
-      title: etapa.title,
-      status: etapa.status
-    }));
+  const handleSaveEdit = (id: string) => {
     editarConvocatoria(id, {
       ...editForm,
-      cronograma: transformedCronograma
+      cronograma: editForm.cronograma
     });
     setEditId(null);
   };
@@ -162,14 +150,16 @@ export default function ApplicationsPage() {
     setEditId(null);
   };
 
-  const handleDeactivate = (id: number) => {
-    editarConvocatoria(id, { status: 'Cerrada' });
+  const handleDeactivate = (id: string) => {
+    editarConvocatoria(id, { status: 'CERRADA' });
   };
 
   const allConvocatorias: Convocatoria[] = [
-    ...(getActiva() ? [getActiva()] : []),
+    ...getActivas(),
     ...getHistorial()
   ].filter((c): c is Convocatoria => c !== undefined);
+
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-red-100 p-8">
@@ -251,7 +241,7 @@ export default function ApplicationsPage() {
         </button>
       </form>
 
-      <h2 className="text-2xl font-bold text-pink-700 mb-6">Historial de Convocatorias</h2>
+      <h2 className="text-2xl font-bold text-pink-700 mb-6">Todas las Convocatorias</h2>
       <ul className="space-y-3">
         {allConvocatorias.map((c: Convocatoria) => c && (
           <li key={c.id} className="flex flex-col md:flex-row items-center justify-between bg-white rounded-lg shadow border border-pink-100 px-5 py-3">
@@ -345,16 +335,21 @@ export default function ApplicationsPage() {
               <>
                 <span className="flex-1">
                   <span className="font-bold text-pink-700">{c.title}</span>
+                  {c.principal && (
+                    <span className="ml-2 px-2 py-1 bg-yellow-400 text-yellow-900 rounded text-xs font-semibold">
+                      ⭐ PRINCIPAL
+                    </span>
+                  )}
                   <span className={`ml-2 px-2 py-1 rounded text-xs font-semibold
-                    ${c.status === 'Borrador' ? 'bg-yellow-100 text-yellow-700' :
-                      c.status === 'Cerrada' ? 'bg-gray-200 text-gray-700' :
+                    ${c.status === 'BORRADOR' ? 'bg-yellow-100 text-yellow-700' :
+                      c.status === 'CERRADA' ? 'bg-gray-200 text-gray-700' :
                       'bg-green-100 text-green-700'}`}>
                     {c.status}
                   </span>
                   <span className="ml-4 text-pink-500 font-medium">{c.deadline}</span>
                 </span>
                 <div className="flex gap-2 mt-2 md:mt-0">
-                  {c.status !== 'Activa' && (
+                  {c.status !== 'ACTIVA' && (
                     <button
                       onClick={() => activarConvocatoria(c.id)}
                       className="px-3 py-1 bg-gradient-to-r from-green-400 to-green-600 text-white rounded font-bold shadow hover:from-green-500 hover:to-green-700 transition"
@@ -363,14 +358,27 @@ export default function ApplicationsPage() {
                       <FaCheck />
                     </button>
                   )}
-                  {c.status === 'Activa' && (
-                    <button
-                      onClick={() => handleDeactivate(c.id)}
-                      className="px-3 py-1 bg-gradient-to-r from-gray-400 to-gray-600 text-white rounded font-bold shadow hover:from-gray-500 hover:to-gray-700 transition"
-                      title="Desactivar"
-                    >
-                      <FaTimes />
-                    </button>
+                  {c.status === 'ACTIVA' && (
+                    <>
+                      <button
+                        onClick={() => marcarPrincipal(c.id)}
+                        className={`px-3 py-1 rounded font-bold shadow transition ${
+                          c.principal 
+                            ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white' 
+                            : 'bg-gradient-to-r from-gray-300 to-gray-400 text-gray-700 hover:from-yellow-400 hover:to-yellow-500 hover:text-white'
+                        }`}
+                        title={c.principal ? "Es la principal" : "Marcar como principal"}
+                      >
+                        <FaStar />
+                      </button>
+                      <button
+                        onClick={() => handleDeactivate(c.id)}
+                        className="px-3 py-1 bg-gradient-to-r from-gray-400 to-gray-600 text-white rounded font-bold shadow hover:from-gray-500 hover:to-gray-700 transition"
+                        title="Desactivar"
+                      >
+                        <FaTimes />
+                      </button>
+                    </>
                   )}
                   <button
                     onClick={() => handleEdit(c)}

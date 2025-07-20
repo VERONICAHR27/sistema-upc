@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useEvents } from '@/contexts/EventContext';
 import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 interface Event {
   id: number;
@@ -18,7 +19,7 @@ interface Event {
 // import { send } from 'resent'; // Desactivado temporalmente
 
 export default function Conferencias() {
-  const { events } = useEvents();
+  const { events, loading } = useEvents();
   const featuredEvent = events.find(e => e.featured);
 
   // Obtener fecha actual (solo fecha, sin hora)
@@ -97,8 +98,20 @@ export default function Conferencias() {
     }, 1200);
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <div className="max-w-7xl mx-auto px-4 py-12 flex flex-col items-center justify-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-pink-500"></div>
+          <p className="mt-4 text-lg text-gray-600">Cargando eventos...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50">
       <Navbar />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -322,6 +335,8 @@ export default function Conferencias() {
         )}
 
       </div>
+      
+      <Footer />
     </div>
   );
 }
