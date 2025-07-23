@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-type Event = {
+/*type Event = {
   id: number;
   title: string;
   date: string;
@@ -13,7 +13,7 @@ type Event = {
   status: string;
   featured: boolean;
   attendees: number;
-};
+};*/
 
 // Storage temporal en memoria (comentado para usar base de datos)
 // const events: Event[] = [];

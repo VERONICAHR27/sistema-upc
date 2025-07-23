@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-type Startup = {
+/*type Startup = {
   id: string;
   nombreComercial: string;
   razonSocial: string;
@@ -20,7 +20,7 @@ type Startup = {
     email: string;
     rol: string;
   }[];
-};
+};*/
 
 // Storage temporal en memoria (comentado para usar base de datos)
 // const startups: Startup[] = [];
@@ -59,7 +59,7 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+/*export async function POST(request: NextRequest) {
   try {
     return NextResponse.json({ 
       error: 'Use /api/formulario para crear postulaciones' 
@@ -68,4 +68,4 @@ export async function POST(request: NextRequest) {
     console.error('Error:', error);
     return NextResponse.json({ error: 'Error en la solicitud' }, { status: 500 });
   }
-}
+}*/

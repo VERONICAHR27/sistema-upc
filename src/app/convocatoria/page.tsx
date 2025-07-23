@@ -13,7 +13,7 @@ export default function Convocatoria() {
   const [showExpiredModal, setShowExpiredModal] = useState(false);
   const [showEarlyModal, setShowEarlyModal] = useState(false);
   const [showResultsModal, setShowResultsModal] = useState(false);
-  const [selectedConvocatoriaId, setSelectedConvocatoriaId] = useState<string>('');
+  /*const [selectedConvocatoriaId, setSelectedConvocatoriaId] = useState<string>('');*/
   const [aceptadas, setAceptadas] = useState<{id: string, nombreComercial: string, razonSocial: string}[]>([]);
 
   const handleVerResultados = async (convocatoriaId: string) => {
@@ -25,7 +25,7 @@ export default function Convocatoria() {
           startup.estado === 'ACEPTADA' && startup.convocatoriaId === convocatoriaId
         );
         setAceptadas(aceptadasFiltradas);
-        setSelectedConvocatoriaId(convocatoriaId);
+        /* setSelectedConvocatoriaId(convocatoriaId); */
         setShowResultsModal(true);
       }
     } catch (error) {
