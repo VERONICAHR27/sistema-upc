@@ -5,10 +5,11 @@ const prisma = new PrismaClient();
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    console.log('Marcando como principal:', params.id);
+    const { id } = await params;
+    console.log('Marcando como principal:', id);
 
     // Primero, desmarcar todas las demás como principal
     await prisma.$executeRaw`
@@ -19,7 +20,7 @@ export async function PUT(
     const result = await prisma.$queryRaw`
       UPDATE convocatorias 
       SET principal = true, status = 'ACTIVA', "updatedAt" = NOW()
-      WHERE id = ${params.id}
+      WHERE id = ${id}
       RETURNING *
     `;
 

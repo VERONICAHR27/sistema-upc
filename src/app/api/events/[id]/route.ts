@@ -5,14 +5,15 @@ const prisma = new PrismaClient();
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { title, date, time, location, type, status, featured } = body;
 
     const updatedEvent = await prisma.event.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         title,
         date,
@@ -34,11 +35,12 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await prisma.event.delete({
-      where: { id: params.id }
+      where: { id: id }
     });
     
     return NextResponse.json({ message: 'Evento eliminado correctamente' });

@@ -24,7 +24,6 @@ export default function EventsPage() {
     e.preventDefault();
     if (!form.title || !form.date || !form.time || !form.location || !form.type) return;
     addEvent({
-      id: Date.now(),
       ...form,
       featured: false, // Siempre no destacado al crear
     });

@@ -16,7 +16,7 @@ export type Event = {
 
 type EventContextType = {
   events: Event[];
-  addEvent: (event: Omit<Event, 'id' | 'attendees' | 'featured'>) => Promise<void>;
+  addEvent: (event: Omit<Event, 'id' | 'attendees'>) => Promise<void>;
   editEvent: (id: number, data: Partial<Event>) => Promise<void>;
   deleteEvent: (id: number) => Promise<void>;
   setFeaturedEvent: (id: number) => Promise<void>;

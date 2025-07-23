@@ -12,11 +12,12 @@ type CronoEtapa = {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise < { id: string } >}
 ) {
   try {
+    const { id } = await params;
     const convocatoria = await prisma.convocatoria.findUnique({
-      where: { id: params.id }
+      where: { id: id }
     });
 
     if (!convocatoria) {
@@ -32,13 +33,14 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise < { id: string } > }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { title, deadline, type, basesUrl, cronograma, status, principal } = body;
 
-    console.log('Updating convocatoria:', params.id, body);
+    console.log('Updating convocatoria:', id, body);
 
     // Preparar los datos para la actualización
     const updateData: {
@@ -77,7 +79,7 @@ export async function PUT(
           status = COALESCE(${status}, status),
           principal = COALESCE(${principal}, principal),
           "updatedAt" = NOW()
-        WHERE id = ${params.id}
+        WHERE id = ${id}
         RETURNING *
       `;
       
@@ -86,7 +88,7 @@ export async function PUT(
     } else {
       // Usar Prisma normal si no incluye principal
       const updatedConvocatoria = await prisma.convocatoria.update({
-        where: { id: params.id },
+        where: { id: id },
         data: updateData
       });
 
@@ -100,13 +102,14 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    console.log('Deleting convocatoria:', params.id);
+    const { id } = await params;
+    console.log('Deleting convocatoria:', id);
 
     await prisma.convocatoria.delete({
-      where: { id: params.id }
+      where: { id: id }
     });
 
     return NextResponse.json({ message: 'Convocatoria eliminada exitosamente' });

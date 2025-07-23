@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ChevronLeftIcon, ChevronRightIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { ZodError } from 'zod';
@@ -78,7 +78,7 @@ interface FormDataState {
   aceptaPrivacidad: string;
 }
 
-export default function FormularioPostulacion() {
+function FormularioContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const convocatoriaId = searchParams.get('convocatoria');
@@ -907,5 +907,13 @@ export default function FormularioPostulacion() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function FormularioPostulacion() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <FormularioContent />
+    </Suspense>
   );
 }

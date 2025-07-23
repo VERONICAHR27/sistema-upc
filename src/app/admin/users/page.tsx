@@ -12,7 +12,7 @@ export type User = {
   lastname: string;
   email: string;
   password: string;
-  role: 'Coordinador' | 'Usuario' ;
+  role: 'Coordinador' | 'Usuario' | 'Startup';
 };
 
 // Datos de ejemplo (mock data)
